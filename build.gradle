@@ -1,0 +1,16 @@
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'application'
+
+
+mainClassName = 'com.firmino.App'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'org.postgresql:postgresql:42.2.5.jre7'
+    implementation 'com.formdev:flatlaf:1.0-rc3'
+    testImplementation     'junit:junit:4.13'
+}
