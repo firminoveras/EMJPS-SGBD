@@ -8,6 +8,7 @@ com/firmino/App.java
  com.firmino.App$6
  com.firmino.App$7
  com.firmino.App$8
+ com.firmino.App$9
 com/firmino/Sql.java
  com.firmino.Sql
  com.firmino.Sql$onPostExecuteListener

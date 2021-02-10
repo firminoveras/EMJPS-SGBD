@@ -1,6 +1,10 @@
 package com.firmino;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -17,35 +21,6 @@ public class App extends javax.swing.JFrame {
         updateTable("Sucesso: Lista atualizada.");
     }
 
-    private void updateTable(String messageAfterUpdate) {
-        setAllComponentsEnabled(false);
-        setStatusText("Atualizando lista...");
-        while (mTable.getModel().getRowCount() > 0) {
-            ((DefaultTableModel) mTable.getModel()).removeRow(0);
-        }
-        new Sql("SELECT * FROM Documentos ORDER BY ID;").setOnPostExecuteListener((ResultSet rs, String feedback) -> {
-            try {
-                while (rs.next()) {
-                    ((DefaultTableModel) mTable.getModel()).addRow(new Object[]{
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("autor"),
-                        rs.getString("disciplina"),
-                        rs.getString("data"),
-                        rs.getString("link"),
-                        rs.getString("ano"),
-                        rs.getString("turma")
-                    });
-                }
-                setStatusText(messageAfterUpdate);
-            } catch (SQLException ex) {
-                setStatusText("Erro: " + ex.getLocalizedMessage());
-            } finally {
-                setAllComponentsEnabled(true);
-            }
-        }).start();
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -53,6 +28,8 @@ public class App extends javax.swing.JFrame {
 
         mMainPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        mLogo = new javax.swing.JLabel();
+        mButtonGithub = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         mTable = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -89,17 +66,39 @@ public class App extends javax.swing.JFrame {
 
         mMainPanel.setForeground(new java.awt.Color(153, 153, 153));
 
-        jPanel1.setBackground(new java.awt.Color(51, 51, 255));
+        jPanel1.setBackground(new java.awt.Color(153, 153, 153));
+
+        mLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mLogo.setIcon(new javax.swing.ImageIcon("res/logo.png"));
+
+        mButtonGithub.setText("Verificar Atualizações");
+        mButtonGithub.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mButtonGithubActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(169, 169, 169)
+                .addComponent(mLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mButtonGithub, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 109, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 86, Short.MAX_VALUE)
+                        .addComponent(mButtonGithub))
+                    .addComponent(mLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jScrollPane1.setBorder(null);
@@ -134,9 +133,6 @@ public class App extends javax.swing.JFrame {
         mTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         mTable.getTableHeader().setReorderingAllowed(false);
         mTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                mTableMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 mTableMousePressed(evt);
             }
@@ -162,7 +158,9 @@ public class App extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("ID");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        jLabel1.setPreferredSize(new java.awt.Dimension(100, 16));
+        jLabel1.setMaximumSize(new java.awt.Dimension(85, 20));
+        jLabel1.setMinimumSize(new java.awt.Dimension(85, 20));
+        jLabel1.setPreferredSize(new java.awt.Dimension(85, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -174,7 +172,9 @@ public class App extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("NOME");
         jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        jLabel2.setPreferredSize(new java.awt.Dimension(150, 16));
+        jLabel2.setMaximumSize(new java.awt.Dimension(170, 20));
+        jLabel2.setMinimumSize(new java.awt.Dimension(170, 20));
+        jLabel2.setPreferredSize(new java.awt.Dimension(150, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -186,7 +186,9 @@ public class App extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("AUTOR");
         jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        jLabel3.setPreferredSize(new java.awt.Dimension(100, 16));
+        jLabel3.setMaximumSize(new java.awt.Dimension(170, 20));
+        jLabel3.setMinimumSize(new java.awt.Dimension(170, 20));
+        jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
@@ -198,7 +200,9 @@ public class App extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("DISCIPLINA");
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        jLabel4.setPreferredSize(new java.awt.Dimension(100, 16));
+        jLabel4.setMaximumSize(new java.awt.Dimension(110, 20));
+        jLabel4.setMinimumSize(new java.awt.Dimension(110, 20));
+        jLabel4.setPreferredSize(new java.awt.Dimension(110, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 0;
@@ -210,7 +214,9 @@ public class App extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("DATA");
         jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        jLabel5.setPreferredSize(new java.awt.Dimension(100, 16));
+        jLabel5.setMaximumSize(new java.awt.Dimension(85, 20));
+        jLabel5.setMinimumSize(new java.awt.Dimension(85, 20));
+        jLabel5.setPreferredSize(new java.awt.Dimension(85, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -223,7 +229,9 @@ public class App extends javax.swing.JFrame {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("LINK");
         jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        jLabel6.setPreferredSize(new java.awt.Dimension(100, 16));
+        jLabel6.setMaximumSize(new java.awt.Dimension(85, 20));
+        jLabel6.setMinimumSize(new java.awt.Dimension(85, 20));
+        jLabel6.setPreferredSize(new java.awt.Dimension(85, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -237,7 +245,9 @@ public class App extends javax.swing.JFrame {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("ANO");
         jLabel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        jLabel7.setPreferredSize(new java.awt.Dimension(100, 16));
+        jLabel7.setMaximumSize(new java.awt.Dimension(85, 20));
+        jLabel7.setMinimumSize(new java.awt.Dimension(85, 20));
+        jLabel7.setPreferredSize(new java.awt.Dimension(85, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
@@ -251,7 +261,9 @@ public class App extends javax.swing.JFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("TURMA");
         jLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        jLabel8.setPreferredSize(new java.awt.Dimension(100, 16));
+        jLabel8.setMaximumSize(new java.awt.Dimension(85, 20));
+        jLabel8.setMinimumSize(new java.awt.Dimension(85, 20));
+        jLabel8.setPreferredSize(new java.awt.Dimension(85, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 8;
@@ -262,6 +274,9 @@ public class App extends javax.swing.JFrame {
 
         mEditorID.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         mEditorID.setModel(new javax.swing.SpinnerNumberModel(1, 0, 99999, 1));
+        mEditorID.setMaximumSize(new java.awt.Dimension(85, 20));
+        mEditorID.setMinimumSize(new java.awt.Dimension(85, 20));
+        mEditorID.setPreferredSize(new java.awt.Dimension(85, 20));
         mEditorID.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 mEditorIDStateChanged(evt);
@@ -274,6 +289,9 @@ public class App extends javax.swing.JFrame {
         jPanel2.add(mEditorID, gridBagConstraints);
 
         mEditorAutor.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mEditorAutor.setMaximumSize(new java.awt.Dimension(170, 20));
+        mEditorAutor.setMinimumSize(new java.awt.Dimension(170, 20));
+        mEditorAutor.setPreferredSize(new java.awt.Dimension(150, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
@@ -281,6 +299,9 @@ public class App extends javax.swing.JFrame {
         jPanel2.add(mEditorAutor, gridBagConstraints);
 
         mEditorNome.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mEditorNome.setMaximumSize(new java.awt.Dimension(170, 20));
+        mEditorNome.setMinimumSize(new java.awt.Dimension(170, 20));
+        mEditorNome.setPreferredSize(new java.awt.Dimension(150, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -289,6 +310,9 @@ public class App extends javax.swing.JFrame {
 
         mEditorDisciplina.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         mEditorDisciplina.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Português", "Matemática", "Ciências", "Geografia", "História", "Inglês", "Artes", "Ed. Física", "Religião" }));
+        mEditorDisciplina.setMaximumSize(new java.awt.Dimension(110, 20));
+        mEditorDisciplina.setMinimumSize(new java.awt.Dimension(110, 20));
+        mEditorDisciplina.setPreferredSize(new java.awt.Dimension(110, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 2;
@@ -296,6 +320,9 @@ public class App extends javax.swing.JFrame {
         jPanel2.add(mEditorDisciplina, gridBagConstraints);
 
         mEditorData.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mEditorData.setMaximumSize(new java.awt.Dimension(85, 20));
+        mEditorData.setMinimumSize(new java.awt.Dimension(85, 20));
+        mEditorData.setPreferredSize(new java.awt.Dimension(85, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
@@ -304,6 +331,9 @@ public class App extends javax.swing.JFrame {
 
         mEditorAno.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         mEditorAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "4", "5", "6", "7", "8", "9", "EJA" }));
+        mEditorAno.setMaximumSize(new java.awt.Dimension(85, 20));
+        mEditorAno.setMinimumSize(new java.awt.Dimension(85, 20));
+        mEditorAno.setPreferredSize(new java.awt.Dimension(85, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 10;
@@ -313,6 +343,9 @@ public class App extends javax.swing.JFrame {
 
         mEditorTurma.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         mEditorTurma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A", "B", "C", "D", "E", "I", "II" }));
+        mEditorTurma.setMaximumSize(new java.awt.Dimension(85, 20));
+        mEditorTurma.setMinimumSize(new java.awt.Dimension(85, 20));
+        mEditorTurma.setPreferredSize(new java.awt.Dimension(85, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 10;
@@ -321,6 +354,10 @@ public class App extends javax.swing.JFrame {
         jPanel2.add(mEditorTurma, gridBagConstraints);
 
         mEditorLink.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mEditorLink.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        mEditorLink.setMaximumSize(new java.awt.Dimension(64, 20));
+        mEditorLink.setMinimumSize(new java.awt.Dimension(64, 20));
+        mEditorLink.setPreferredSize(new java.awt.Dimension(64, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
@@ -376,7 +413,7 @@ public class App extends javax.swing.JFrame {
                     .addComponent(mButtonEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(mButtonAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(mButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE))
+                    .addComponent(mButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -392,7 +429,7 @@ public class App extends javax.swing.JFrame {
                 .addComponent(mButtonEdit)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mButtonDelete)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel5.setBackground(new java.awt.Color(51, 51, 51));
@@ -427,7 +464,7 @@ public class App extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addGroup(mMainPanelLayout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -438,14 +475,14 @@ public class App extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -462,11 +499,59 @@ public class App extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void mTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mTableMouseClicked
+    private void setAllComponentsEnabled(boolean enabled) {
+        jScrollPane1.setEnabled(enabled);
+        mButtonAdd.setEnabled(enabled);
+        mButtonDelete.setEnabled(enabled);
+        mButtonEdit.setEnabled(enabled);
+        mButtonNovo.setEnabled(enabled);
+        mButtonRefresh.setEnabled(enabled);
+        mEditorAno.setEnabled(enabled);
+        mEditorAutor.setEnabled(enabled);
+        mEditorData.setEnabled(enabled);
+        mEditorDisciplina.setEnabled(enabled);
+        mEditorID.setEnabled(enabled);
+        mEditorLink.setEnabled(enabled);
+        mEditorNome.setEnabled(enabled);
+        mEditorTurma.setEnabled(enabled);
+        mTable.setEnabled(enabled);
+    }
 
-    }//GEN-LAST:event_mTableMouseClicked
+    private void setStatusText(String text) {
+        mStatusText.setText(text);
+    }
+
+    private void updateTable(String messageAfterUpdate) {
+        setAllComponentsEnabled(false);
+        setStatusText("Atualizando lista...");
+        while (mTable.getModel().getRowCount() > 0) {
+            ((DefaultTableModel) mTable.getModel()).removeRow(0);
+        }
+        new Sql("SELECT * FROM Documentos ORDER BY ID;").setOnPostExecuteListener((ResultSet rs, String feedback) -> {
+            try {
+                while (rs.next()) {
+                    ((DefaultTableModel) mTable.getModel()).addRow(new Object[]{
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("autor"),
+                        rs.getString("disciplina"),
+                        rs.getString("data"),
+                        rs.getString("link"),
+                        rs.getString("ano"),
+                        rs.getString("turma")
+                    });
+                }
+                setStatusText(messageAfterUpdate);
+            } catch (SQLException ex) {
+                setStatusText("Erro: " + ex.getLocalizedMessage());
+            } finally {
+                setAllComponentsEnabled(true);
+            }
+        }).start();
+    }
 
     private void mButtonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonNovoActionPerformed
+        mTable.clearSelection();
         int id = 0;
         for (int count = id; count < mTable.getModel().getRowCount(); count++) {
             if (((int) mTable.getModel().getValueAt(count, 0)) > id) {
@@ -595,6 +680,14 @@ public class App extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mButtonEditActionPerformed
 
+    private void mButtonGithubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonGithubActionPerformed
+        try {
+            Desktop.getDesktop().browse(new URI("https://github.com/firminoveras/EMJPS-SGBD/releases"));
+        } catch (URISyntaxException | IOException ex) {
+            setStatusText("Erro: Não foi possivel abrir navegador.");
+        }
+    }//GEN-LAST:event_mButtonGithubActionPerformed
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -639,6 +732,7 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JButton mButtonAdd;
     private javax.swing.JButton mButtonDelete;
     private javax.swing.JButton mButtonEdit;
+    private javax.swing.JButton mButtonGithub;
     private javax.swing.JButton mButtonNovo;
     private javax.swing.JButton mButtonRefresh;
     private javax.swing.JComboBox<String> mEditorAno;
@@ -649,31 +743,9 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JTextField mEditorLink;
     private javax.swing.JTextField mEditorNome;
     private javax.swing.JComboBox<String> mEditorTurma;
+    private javax.swing.JLabel mLogo;
     private javax.swing.JPanel mMainPanel;
     private javax.swing.JLabel mStatusText;
     private javax.swing.JTable mTable;
     // End of variables declaration//GEN-END:variables
-
-    private void setAllComponentsEnabled(boolean enabled) {
-        jScrollPane1.setEnabled(enabled);
-        mButtonAdd.setEnabled(enabled);
-        mButtonDelete.setEnabled(enabled);
-        mButtonEdit.setEnabled(enabled);
-        mButtonNovo.setEnabled(enabled);
-        mButtonRefresh.setEnabled(enabled);
-        mEditorAno.setEnabled(enabled);
-        mEditorAutor.setEnabled(enabled);
-        mEditorData.setEnabled(enabled);
-        mEditorDisciplina.setEnabled(enabled);
-        mEditorID.setEnabled(enabled);
-        mEditorLink.setEnabled(enabled);
-        mEditorNome.setEnabled(enabled);
-        mEditorTurma.setEnabled(enabled);
-        mTable.setEnabled(enabled);
-    }
-
-    private void setStatusText(String text) {
-        mStatusText.setText(text);
-    }
-
 }
