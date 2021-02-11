@@ -342,7 +342,7 @@ public class App extends javax.swing.JFrame {
         jPanel2.add(mEditorAno, gridBagConstraints);
 
         mEditorTurma.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        mEditorTurma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A", "B", "C", "D", "E", "I", "II" }));
+        mEditorTurma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A", "B", "C", "D", "E", "VII", "VIII" }));
         mEditorTurma.setMaximumSize(new java.awt.Dimension(85, 20));
         mEditorTurma.setMinimumSize(new java.awt.Dimension(85, 20));
         mEditorTurma.setPreferredSize(new java.awt.Dimension(85, 20));
