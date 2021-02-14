@@ -2,6 +2,11 @@ package com.firmino;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Desktop;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,10 +20,13 @@ import javax.swing.table.DefaultTableModel;
 
 public class App extends javax.swing.JFrame {
 
+    private final static String VERSION = "1.3";
+
     public App() {
         FlatDarkLaf.install();
         initComponents();
         updateTable("Sucesso: Lista atualizada.");
+        mVersionText.setText("Versão "+VERSION);
     }
 
     @SuppressWarnings("unchecked")
@@ -29,7 +37,6 @@ public class App extends javax.swing.JFrame {
         mMainPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         mLogo = new javax.swing.JLabel();
-        mButtonGithub = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         mTable = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -55,8 +62,12 @@ public class App extends javax.swing.JFrame {
         mButtonDelete = new javax.swing.JButton();
         mButtonRefresh = new javax.swing.JButton();
         mButtonNovo = new javax.swing.JButton();
+        mOpenPlanilhas = new javax.swing.JButton();
+        mImport = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         mStatusText = new javax.swing.JLabel();
+        mButtonGithub = new javax.swing.JButton();
+        mVersionText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("EMJPS - Gerenciador de Banco de Dados");
@@ -71,33 +82,20 @@ public class App extends javax.swing.JFrame {
         mLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mLogo.setIcon(new javax.swing.ImageIcon("res/logo.png"));
 
-        mButtonGithub.setText("Verificar Atualizações");
-        mButtonGithub.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mButtonGithubActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(169, 169, 169)
-                .addComponent(mLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mButtonGithub, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(mLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 86, Short.MAX_VALUE)
-                        .addComponent(mButtonGithub))
-                    .addComponent(mLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(mLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -165,6 +163,7 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         jPanel2.add(jLabel1, gridBagConstraints);
 
         jLabel2.setBackground(new java.awt.Color(60, 63, 64));
@@ -207,6 +206,7 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         jPanel2.add(jLabel4, gridBagConstraints);
 
         jLabel5.setBackground(new java.awt.Color(60, 63, 64));
@@ -221,7 +221,7 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
         jPanel2.add(jLabel5, gridBagConstraints);
 
         jLabel6.setBackground(new java.awt.Color(60, 63, 64));
@@ -237,7 +237,7 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
         jPanel2.add(jLabel6, gridBagConstraints);
 
         jLabel7.setBackground(new java.awt.Color(60, 63, 64));
@@ -253,7 +253,7 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridy = 8;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
         jPanel2.add(jLabel7, gridBagConstraints);
 
         jLabel8.setBackground(new java.awt.Color(60, 63, 64));
@@ -269,7 +269,7 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridy = 8;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
         jPanel2.add(jLabel8, gridBagConstraints);
 
         mEditorID.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -286,6 +286,7 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         jPanel2.add(mEditorID, gridBagConstraints);
 
         mEditorAutor.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -317,6 +318,7 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         jPanel2.add(mEditorDisciplina, gridBagConstraints);
 
         mEditorData.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -327,6 +329,7 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         jPanel2.add(mEditorData, gridBagConstraints);
 
         mEditorAno.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -339,6 +342,7 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridy = 10;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         jPanel2.add(mEditorAno, gridBagConstraints);
 
         mEditorTurma.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -351,6 +355,7 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridy = 10;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         jPanel2.add(mEditorTurma, gridBagConstraints);
 
         mEditorLink.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -363,11 +368,13 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         jPanel2.add(mEditorLink, gridBagConstraints);
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
         mButtonAdd.setText("INSERIR");
+        mButtonAdd.setFocusPainted(false);
         mButtonAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mButtonAddActionPerformed(evt);
@@ -375,6 +382,7 @@ public class App extends javax.swing.JFrame {
         });
 
         mButtonEdit.setText("ALTERAR");
+        mButtonEdit.setFocusPainted(false);
         mButtonEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mButtonEditActionPerformed(evt);
@@ -382,6 +390,7 @@ public class App extends javax.swing.JFrame {
         });
 
         mButtonDelete.setText("EXCLUIR");
+        mButtonDelete.setFocusPainted(false);
         mButtonDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mButtonDeleteActionPerformed(evt);
@@ -389,6 +398,7 @@ public class App extends javax.swing.JFrame {
         });
 
         mButtonRefresh.setText("RECARREGAR LISTA");
+        mButtonRefresh.setFocusPainted(false);
         mButtonRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mButtonRefreshActionPerformed(evt);
@@ -396,9 +406,26 @@ public class App extends javax.swing.JFrame {
         });
 
         mButtonNovo.setText("NOVO");
+        mButtonNovo.setFocusPainted(false);
         mButtonNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mButtonNovoActionPerformed(evt);
+            }
+        });
+
+        mOpenPlanilhas.setText("Abrir Planilha");
+        mOpenPlanilhas.setFocusPainted(false);
+        mOpenPlanilhas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mOpenPlanilhasActionPerformed(evt);
+            }
+        });
+
+        mImport.setText("Colar da Planilha");
+        mImport.setFocusPainted(false);
+        mImport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mImportActionPerformed(evt);
             }
         });
 
@@ -409,47 +436,76 @@ public class App extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mButtonDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mButtonEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mButtonAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(mButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
+                    .addComponent(mButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(mButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(mButtonEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(mButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(mOpenPlanilhas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(mImport, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mButtonNovo)
+                .addComponent(mButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mButtonRefresh)
-                .addGap(18, 18, 18)
-                .addComponent(mButtonAdd)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mButtonEdit)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(mButtonAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                    .addComponent(mButtonEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mButtonDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mButtonDelete)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mOpenPlanilhas)
+                    .addComponent(mImport))
+                .addContainerGap())
         );
 
         jPanel5.setBackground(new java.awt.Color(51, 51, 51));
 
-        mStatusText.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mStatusText.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+
+        mButtonGithub.setText("Verificar Atualizações");
+        mButtonGithub.setFocusPainted(false);
+        mButtonGithub.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mButtonGithubActionPerformed(evt);
+            }
+        });
+
+        mVersionText.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mVersionText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+            .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(mStatusText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mVersionText, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mButtonGithub)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mStatusText, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(mButtonGithub, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mStatusText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mVersionText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -464,7 +520,7 @@ public class App extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addGroup(mMainPanelLayout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -475,11 +531,11 @@ public class App extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -548,6 +604,16 @@ public class App extends javax.swing.JFrame {
                 setAllComponentsEnabled(true);
             }
         }).start();
+    }
+
+    private String getClipboard() throws IOException, UnsupportedFlavorException {
+        String clip = "";
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        Transferable content = clipboard.getContents(null);
+        if (content != null && content.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+            clip = (String) content.getTransferData(DataFlavor.stringFlavor);
+        }
+        return clip;
     }
 
     private void mButtonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonNovoActionPerformed
@@ -688,6 +754,54 @@ public class App extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mButtonGithubActionPerformed
 
+    private void mImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mImportActionPerformed
+        try {
+            String query = "", preview = "";
+            String[] clip = getClipboard().split("\n");
+            for (String line : clip) {
+                String[] column = line.split(String.valueOf((char) 9));
+                query += "INSERT INTO documentos VALUES ("
+                        + column[0] + ","
+                        + "'" + column[1] + "',"
+                        + "'" + column[2] + "',"
+                        + "'" + column[3] + "',"
+                        + "'" + column[4] + "',"
+                        + "'" + column[5] + "',"
+                        + "'" + column[6] + "',"
+                        + "'" + column[7] + "');\n";
+                preview += column[0] + " - " + column[1] + " - " + column[2] + " - " + column[3] + " - " + column[4] + " - " + column[6] + " - " + column[7] + "\n";
+            }
+            int confirm = JOptionPane.showConfirmDialog(mMainPanel,
+                    "Tem certeza que deseja adicionar os " + clip.length + " documentos abaixo?\n" + preview,
+                    "Inserção em Massa", JOptionPane.YES_NO_OPTION);
+
+            if (confirm == 0) {
+                setAllComponentsEnabled(false);
+                setStatusText("Inserindo em Massa...");
+                new Sql(query).setOnPostExecuteListener((ResultSet rs, String feedback) -> {
+                    if (feedback.equals("")) {
+                        updateTable("Sucesso: " + clip.length + " documentos em massa inseridos.");
+                    } else {
+                        setStatusText(feedback);
+                    }
+                    setAllComponentsEnabled(true);
+                }).start();
+            }
+        } catch (IOException | UnsupportedFlavorException ex) {
+            System.out.println(ex.getMessage());
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+            JOptionPane.showMessageDialog(mMainPanel, "Formato não aceito, tenha certeza de que está copiando toda a linha da planilha e que está usando o Planilha do Google. Evite copiar linhas em branco.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_mImportActionPerformed
+
+    private void mOpenPlanilhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mOpenPlanilhasActionPerformed
+         try {
+            Desktop.getDesktop().browse(new URI("https://docs.google.com/spreadsheets/d/1W8IUcbsLwruiXyXgFGoUYN4HQAtxRfdaIgObKZVbTs8/edit?usp=sharing"));
+        } catch (URISyntaxException | IOException ex) {
+            setStatusText("Erro: Não foi possivel abrir navegador.");
+        }
+    }//GEN-LAST:event_mOpenPlanilhasActionPerformed
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -743,9 +857,12 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JTextField mEditorLink;
     private javax.swing.JTextField mEditorNome;
     private javax.swing.JComboBox<String> mEditorTurma;
+    private javax.swing.JButton mImport;
     private javax.swing.JLabel mLogo;
     private javax.swing.JPanel mMainPanel;
+    private javax.swing.JButton mOpenPlanilhas;
     private javax.swing.JLabel mStatusText;
     private javax.swing.JTable mTable;
+    private javax.swing.JLabel mVersionText;
     // End of variables declaration//GEN-END:variables
 }

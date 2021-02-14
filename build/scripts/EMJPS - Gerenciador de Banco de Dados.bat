@@ -67,7 +67,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\EMJPS - Gerenciador de Banco de Dados-1.1.jar;%APP_HOME%\lib\postgresql-42.2.5.jre7.jar;%APP_HOME%\lib\flatlaf-1.0-rc3.jar
+set CLASSPATH=%APP_HOME%\lib\EMJPS - Gerenciador de Banco de Dados-1.3.jar;%APP_HOME%\lib\postgresql-42.2.5.jre7.jar;%APP_HOME%\lib\flatlaf-1.0-rc3.jar
 
 
 @rem Execute EMJPS - Gerenciador de Banco de Dados
