@@ -5,12 +5,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Sql extends Thread {
+public abstract class Sql extends Thread implements onPostExecuteListener {
 
     private final String mQuery;
     private static Connection conexaoBD;
-    private onPostExecuteListener mPostExecuteListener = (rs, fb) -> {
-    };
+    private static String password;
+
+    public static void setPassword(String pw) {
+        password = pw;
+    }
 
     public Sql(String query) {
         this.mQuery = query;
@@ -18,8 +21,8 @@ public class Sql extends Thread {
 
     @Override
     public void run() {
+        System.out.println("Query: " + mQuery);
         ResultSet resultadoSQL = null;
-        String feedback = "";
         try {
             if (conexaoBD != null) {
                 while (true) {
@@ -28,31 +31,31 @@ public class Sql extends Thread {
                     }
                 }
             }
-            conexaoBD = DriverManager.getConnection("jdbc:postgresql://motty.db.elephantsql.com:5432/popbjumd", "popbjumd", SqlConfig.key);
+            conexaoBD = DriverManager.getConnection("jdbc:postgresql://motty.db.elephantsql.com:5432/popbjumd", "popbjumd", password);
             resultadoSQL = conexaoBD.createStatement().executeQuery(mQuery);
+            onQueryConcluida(resultadoSQL);
         } catch (SQLException e) {
-            if (!e.getLocalizedMessage().contains("Nenhum resultado foi retornado pela consulta")) {
-                feedback = e.getLocalizedMessage();
+            if (e.getLocalizedMessage().contains("Nenhum resultado foi retornado pela consulta")) {                
+                onQueryConcluida(resultadoSQL);
+            } else {
+                onQueryErro(e.getLocalizedMessage());
             }
+            System.out.println("ERRO: " + e.getLocalizedMessage());
         } finally {
-            try {
-                if (conexaoBD != null) {
+            if (conexaoBD != null) {
+                try {
                     conexaoBD.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex.getLocalizedMessage());
                 }
-            } catch (SQLException throwables) {
-                feedback += " AND " + throwables.getMessage();
             }
         }
-        mPostExecuteListener.onQueryConcluida(resultadoSQL, feedback);
     }
+}
 
-    public Sql setOnPostExecuteListener(onPostExecuteListener postExecuteListener) {
-        this.mPostExecuteListener = postExecuteListener;
-        return this;
-    }
+interface onPostExecuteListener {
 
-    public interface onPostExecuteListener {
+    void onQueryConcluida(ResultSet rs);
 
-        void onQueryConcluida(ResultSet rs, String feedback);
-    }
+    void onQueryErro(String feedback);
 }

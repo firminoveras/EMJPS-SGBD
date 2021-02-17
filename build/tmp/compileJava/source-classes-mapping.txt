@@ -3,6 +3,11 @@ com/firmino/App.java
  com.firmino.App$1
  com.firmino.App$10
  com.firmino.App$11
+ com.firmino.App$12
+ com.firmino.App$13
+ com.firmino.App$14
+ com.firmino.App$15
+ com.firmino.App$16
  com.firmino.App$2
  com.firmino.App$3
  com.firmino.App$4
@@ -13,6 +18,4 @@ com/firmino/App.java
  com.firmino.App$9
 com/firmino/Sql.java
  com.firmino.Sql
- com.firmino.Sql$onPostExecuteListener
-com/firmino/SqlConfig.java
- com.firmino.SqlConfig
+ com.firmino.onPostExecuteListener

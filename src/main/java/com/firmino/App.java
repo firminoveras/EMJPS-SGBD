@@ -20,13 +20,16 @@ import javax.swing.table.DefaultTableModel;
 
 public class App extends javax.swing.JFrame {
 
-    private final static String VERSION = "1.3";
+    private final static String VERSION = "1.4";
 
     public App() {
         FlatDarkLaf.install();
         initComponents();
-        updateTable("Sucesso: Lista atualizada.");
-        mVersionText.setText("Versão "+VERSION);
+        mVersionText.setText("Versão " + VERSION);
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            Sql.setPassword(JOptionPane.showInputDialog("Senha de acesso ao Banco de Dados: "));
+            updateTable("Sucesso: Lista atualizada.");
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -439,29 +442,28 @@ public class App extends javax.swing.JFrame {
                     .addComponent(mButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(mButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(mButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(mButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mButtonEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(mButtonEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(mButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(mOpenPlanilhas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mImport, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(mImport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(mButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mButtonRefresh)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(mButtonAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                    .addComponent(mButtonEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(mButtonEdit, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                    .addComponent(mButtonAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(mButtonDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -491,8 +493,8 @@ public class App extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mStatusText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mStatusText, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(mVersionText, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mButtonGithub)
@@ -545,7 +547,9 @@ public class App extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mMainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mMainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -583,27 +587,36 @@ public class App extends javax.swing.JFrame {
         while (mTable.getModel().getRowCount() > 0) {
             ((DefaultTableModel) mTable.getModel()).removeRow(0);
         }
-        new Sql("SELECT * FROM Documentos ORDER BY ID;").setOnPostExecuteListener((ResultSet rs, String feedback) -> {
-            try {
-                while (rs.next()) {
-                    ((DefaultTableModel) mTable.getModel()).addRow(new Object[]{
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("autor"),
-                        rs.getString("disciplina"),
-                        rs.getString("data"),
-                        rs.getString("link"),
-                        rs.getString("ano"),
-                        rs.getString("turma")
-                    });
+        new Sql("SELECT * FROM Documentos ORDER BY ID;") {
+            @Override
+            public void onQueryConcluida(ResultSet rs) {
+                try {
+                    while (rs.next()) {
+                        ((DefaultTableModel) mTable.getModel()).addRow(new Object[]{
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getString("autor"),
+                            rs.getString("disciplina"),
+                            rs.getString("data"),
+                            rs.getString("link"),
+                            rs.getString("ano"),
+                            rs.getString("turma")
+                        });
+                    }
+                    setStatusText(messageAfterUpdate);
+                } catch (SQLException ex) {
+                    setStatusText("Erro: " + ex.getLocalizedMessage());
+                } finally {
+                    setAllComponentsEnabled(true);
                 }
-                setStatusText(messageAfterUpdate);
-            } catch (SQLException ex) {
-                setStatusText("Erro: " + ex.getLocalizedMessage());
-            } finally {
+            }
+
+            @Override
+            public void onQueryErro(String feedback) {
+                setStatusText("Erro: " + feedback);
                 setAllComponentsEnabled(true);
             }
-        }).start();
+        }.start();
     }
 
     private String getClipboard() throws IOException, UnsupportedFlavorException {
@@ -645,15 +658,18 @@ public class App extends javax.swing.JFrame {
                 + "'" + mEditorData.getText() + "',"
                 + "'" + mEditorLink.getText() + "',"
                 + "'" + String.valueOf(mEditorAno.getItemAt(mEditorAno.getSelectedIndex())) + "',"
-                + "'" + String.valueOf(mEditorTurma.getItemAt(mEditorTurma.getSelectedIndex())) + "');")
-                .setOnPostExecuteListener((ResultSet rs, String feedback) -> {
-                    if (feedback.equals("")) {
-                        updateTable("Sucesso: Documento enviado.");
-                    } else {
-                        setStatusText(feedback);
-                    }
-                    setAllComponentsEnabled(true);
-                }).start();
+                + "'" + String.valueOf(mEditorTurma.getItemAt(mEditorTurma.getSelectedIndex())) + "');") {
+            @Override
+            public void onQueryConcluida(ResultSet rs) {
+                updateTable("Sucesso: Documento enviado.");
+            }
+
+            @Override
+            public void onQueryErro(String feedback) {
+                setStatusText("Erro: " + feedback);
+                setAllComponentsEnabled(true);
+            }
+        }.start();
     }//GEN-LAST:event_mButtonAddActionPerformed
 
     private void mButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonRefreshActionPerformed
@@ -704,15 +720,18 @@ public class App extends javax.swing.JFrame {
         if (opcao == 0) {
             setAllComponentsEnabled(false);
             setStatusText("Excluindo documento...");
-            new Sql("DELETE FROM DOCUMENTOS WHERE ID=" + mEditorID.getValue())
-                    .setOnPostExecuteListener((ResultSet rs, String feedback) -> {
-                        if (feedback.equals("")) {
-                            updateTable("Sucesso: Documento excuido.");
-                        } else {
-                            setStatusText(feedback);
-                        }
-                        setAllComponentsEnabled(true);
-                    }).start();
+            new Sql("DELETE FROM DOCUMENTOS WHERE ID=" + mEditorID.getValue()) {
+                @Override
+                public void onQueryConcluida(ResultSet rs) {
+                    updateTable("Sucesso: Documento excuido.");
+                }
+
+                @Override
+                public void onQueryErro(String feedback) {
+                    setStatusText(feedback);
+                    setAllComponentsEnabled(true);
+                }
+            }.start();
         }
     }//GEN-LAST:event_mButtonDeleteActionPerformed
 
@@ -734,15 +753,18 @@ public class App extends javax.swing.JFrame {
                     + "link= '" + mEditorLink.getText() + "',"
                     + "ano= '" + String.valueOf(mEditorAno.getItemAt(mEditorAno.getSelectedIndex())) + "',"
                     + "turma= '" + String.valueOf(mEditorTurma.getItemAt(mEditorTurma.getSelectedIndex())) + "' "
-                    + "WHERE ID=" + mEditorID.getValue())
-                    .setOnPostExecuteListener((ResultSet rs, String feedback) -> {
-                        if (feedback.equals("")) {
-                            updateTable("Sucesso: Documento editado.");
-                        } else {
-                            setStatusText(feedback);
-                        }
-                        setAllComponentsEnabled(true);
-                    }).start();
+                    + "WHERE ID=" + mEditorID.getValue()) {
+                @Override
+                public void onQueryConcluida(ResultSet rs) {
+                    updateTable("Sucesso: Todos os documentos de ID " + mEditorID.getValue() + " foram modificados.");
+                }
+
+                @Override
+                public void onQueryErro(String feedback) {
+                    setStatusText(feedback);
+                    setAllComponentsEnabled(true);
+                }
+            }.start();
         }
     }//GEN-LAST:event_mButtonEditActionPerformed
 
@@ -778,14 +800,18 @@ public class App extends javax.swing.JFrame {
             if (confirm == 0) {
                 setAllComponentsEnabled(false);
                 setStatusText("Inserindo em Massa...");
-                new Sql(query).setOnPostExecuteListener((ResultSet rs, String feedback) -> {
-                    if (feedback.equals("")) {
+                new Sql(query) {
+                    @Override
+                    public void onQueryConcluida(ResultSet rs) {
                         updateTable("Sucesso: " + clip.length + " documentos em massa inseridos.");
-                    } else {
-                        setStatusText(feedback);
                     }
-                    setAllComponentsEnabled(true);
-                }).start();
+
+                    @Override
+                    public void onQueryErro(String feedback) {
+                        setStatusText(feedback);
+                        setAllComponentsEnabled(true);
+                    }
+                }.start();
             }
         } catch (IOException | UnsupportedFlavorException ex) {
             System.out.println(ex.getMessage());
@@ -795,7 +821,7 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_mImportActionPerformed
 
     private void mOpenPlanilhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mOpenPlanilhasActionPerformed
-         try {
+        try {
             Desktop.getDesktop().browse(new URI("https://docs.google.com/spreadsheets/d/1W8IUcbsLwruiXyXgFGoUYN4HQAtxRfdaIgObKZVbTs8/edit?usp=sharing"));
         } catch (URISyntaxException | IOException ex) {
             setStatusText("Erro: Não foi possivel abrir navegador.");
