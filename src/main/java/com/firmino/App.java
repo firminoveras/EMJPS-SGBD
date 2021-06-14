@@ -20,7 +20,11 @@ import javax.swing.table.DefaultTableModel;
 
 public class App extends javax.swing.JFrame {
 
-    private final static String VERSION = "1.4";
+    private final static String VERSION = "1.5";    
+    private final static int TABLE_ID_APOSTILAS = 0;
+    private final static int TABLE_ID_LIVROS = 1;
+    
+    private int TableIdAtual = 0;
 
     public App() {
         FlatDarkLaf.install();
@@ -28,7 +32,7 @@ public class App extends javax.swing.JFrame {
         mVersionText.setText("Versão " + VERSION);
         javax.swing.SwingUtilities.invokeLater(() -> {
             Sql.setPassword(JOptionPane.showInputDialog("Senha de acesso ao Banco de Dados: "));
-            updateTable("Sucesso: Lista atualizada.");
+            updateTable("Sucesso: Lista atualizada.", TABLE_ID_APOSTILAS);
         });
     }
 
@@ -42,6 +46,8 @@ public class App extends javax.swing.JFrame {
         mLogo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         mTable = new javax.swing.JTable();
+        Tabs = new javax.swing.JTabbedPane();
+        jPanel4 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -51,22 +57,42 @@ public class App extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        mEditorID = new javax.swing.JSpinner();
-        mEditorAutor = new javax.swing.JTextField();
-        mEditorNome = new javax.swing.JTextField();
-        mEditorDisciplina = new javax.swing.JComboBox<>();
-        mEditorData = new javax.swing.JTextField();
-        mEditorAno = new javax.swing.JComboBox<>();
-        mEditorTurma = new javax.swing.JComboBox<>();
-        mEditorLink = new javax.swing.JTextField();
+        mApostilaID = new javax.swing.JSpinner();
+        mApostilaAutor = new javax.swing.JTextField();
+        mApostilaNome = new javax.swing.JTextField();
+        mApostilaDisciplina = new javax.swing.JComboBox<>();
+        mApostilaData = new javax.swing.JTextField();
+        mApostilaAno = new javax.swing.JComboBox<>();
+        mApostilaTurma = new javax.swing.JComboBox<>();
+        mApostilaPDF = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
-        mButtonAdd = new javax.swing.JButton();
-        mButtonEdit = new javax.swing.JButton();
-        mButtonDelete = new javax.swing.JButton();
-        mButtonRefresh = new javax.swing.JButton();
-        mButtonNovo = new javax.swing.JButton();
-        mOpenPlanilhas = new javax.swing.JButton();
-        mImport = new javax.swing.JButton();
+        mApostilaInsert = new javax.swing.JButton();
+        mApostilaUpdate = new javax.swing.JButton();
+        mApostilaButtonDelete = new javax.swing.JButton();
+        mApostilaButtonRefresh = new javax.swing.JButton();
+        mApostilaButtonNovo = new javax.swing.JButton();
+        mApostilaButtonOpenPlanilha = new javax.swing.JButton();
+        mApostilaButtonPastePlanilha = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        mLivroID = new javax.swing.JSpinner();
+        mLivroAutor = new javax.swing.JTextField();
+        mLivroTitulo = new javax.swing.JTextField();
+        mLivroEditora = new javax.swing.JTextField();
+        mLivroImagem = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        mLivroPDF = new javax.swing.JTextField();
+        jPanel8 = new javax.swing.JPanel();
+        mLivroButtonInsert = new javax.swing.JButton();
+        mLivroButtonUpdate = new javax.swing.JButton();
+        mLivroButtonDelete = new javax.swing.JButton();
+        mLivroButtonRefresh = new javax.swing.JButton();
+        mLivroButtonNovo = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         mStatusText = new javax.swing.JLabel();
         mButtonGithub = new javax.swing.JButton();
@@ -147,6 +173,12 @@ public class App extends javax.swing.JFrame {
             mTable.getColumnModel().getColumn(6).setPreferredWidth(20);
             mTable.getColumnModel().getColumn(7).setPreferredWidth(20);
         }
+
+        Tabs.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                TabsStateChanged(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
         java.awt.GridBagLayout jPanel2Layout = new java.awt.GridBagLayout();
@@ -275,14 +307,14 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
         jPanel2.add(jLabel8, gridBagConstraints);
 
-        mEditorID.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        mEditorID.setModel(new javax.swing.SpinnerNumberModel(1, 0, 99999, 1));
-        mEditorID.setMaximumSize(new java.awt.Dimension(85, 20));
-        mEditorID.setMinimumSize(new java.awt.Dimension(85, 20));
-        mEditorID.setPreferredSize(new java.awt.Dimension(85, 20));
-        mEditorID.addChangeListener(new javax.swing.event.ChangeListener() {
+        mApostilaID.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mApostilaID.setModel(new javax.swing.SpinnerNumberModel(1, 0, 99999, 1));
+        mApostilaID.setMaximumSize(new java.awt.Dimension(85, 20));
+        mApostilaID.setMinimumSize(new java.awt.Dimension(85, 20));
+        mApostilaID.setPreferredSize(new java.awt.Dimension(85, 20));
+        mApostilaID.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                mEditorIDStateChanged(evt);
+                mApostilaIDStateChanged(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -290,145 +322,145 @@ public class App extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
-        jPanel2.add(mEditorID, gridBagConstraints);
+        jPanel2.add(mApostilaID, gridBagConstraints);
 
-        mEditorAutor.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        mEditorAutor.setMaximumSize(new java.awt.Dimension(170, 20));
-        mEditorAutor.setMinimumSize(new java.awt.Dimension(170, 20));
-        mEditorAutor.setPreferredSize(new java.awt.Dimension(150, 20));
+        mApostilaAutor.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mApostilaAutor.setMaximumSize(new java.awt.Dimension(170, 20));
+        mApostilaAutor.setMinimumSize(new java.awt.Dimension(170, 20));
+        mApostilaAutor.setPreferredSize(new java.awt.Dimension(150, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        jPanel2.add(mEditorAutor, gridBagConstraints);
+        jPanel2.add(mApostilaAutor, gridBagConstraints);
 
-        mEditorNome.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        mEditorNome.setMaximumSize(new java.awt.Dimension(170, 20));
-        mEditorNome.setMinimumSize(new java.awt.Dimension(170, 20));
-        mEditorNome.setPreferredSize(new java.awt.Dimension(150, 20));
+        mApostilaNome.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mApostilaNome.setMaximumSize(new java.awt.Dimension(170, 20));
+        mApostilaNome.setMinimumSize(new java.awt.Dimension(170, 20));
+        mApostilaNome.setPreferredSize(new java.awt.Dimension(150, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        jPanel2.add(mEditorNome, gridBagConstraints);
+        jPanel2.add(mApostilaNome, gridBagConstraints);
 
-        mEditorDisciplina.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        mEditorDisciplina.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Português", "Matemática", "Ciências", "Geografia", "História", "Inglês", "Artes", "Ed. Física", "Religião" }));
-        mEditorDisciplina.setMaximumSize(new java.awt.Dimension(110, 20));
-        mEditorDisciplina.setMinimumSize(new java.awt.Dimension(110, 20));
-        mEditorDisciplina.setPreferredSize(new java.awt.Dimension(110, 20));
+        mApostilaDisciplina.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mApostilaDisciplina.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Português", "Matemática", "Ciências", "Geografia", "História", "Inglês", "Artes", "Ed. Física", "Religião" }));
+        mApostilaDisciplina.setMaximumSize(new java.awt.Dimension(110, 20));
+        mApostilaDisciplina.setMinimumSize(new java.awt.Dimension(110, 20));
+        mApostilaDisciplina.setPreferredSize(new java.awt.Dimension(110, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        jPanel2.add(mEditorDisciplina, gridBagConstraints);
+        jPanel2.add(mApostilaDisciplina, gridBagConstraints);
 
-        mEditorData.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        mEditorData.setMaximumSize(new java.awt.Dimension(85, 20));
-        mEditorData.setMinimumSize(new java.awt.Dimension(85, 20));
-        mEditorData.setPreferredSize(new java.awt.Dimension(85, 20));
+        mApostilaData.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mApostilaData.setMaximumSize(new java.awt.Dimension(85, 20));
+        mApostilaData.setMinimumSize(new java.awt.Dimension(85, 20));
+        mApostilaData.setPreferredSize(new java.awt.Dimension(85, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
-        jPanel2.add(mEditorData, gridBagConstraints);
+        jPanel2.add(mApostilaData, gridBagConstraints);
 
-        mEditorAno.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        mEditorAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "4", "5", "6", "7", "8", "9", "EJA" }));
-        mEditorAno.setMaximumSize(new java.awt.Dimension(85, 20));
-        mEditorAno.setMinimumSize(new java.awt.Dimension(85, 20));
-        mEditorAno.setPreferredSize(new java.awt.Dimension(85, 20));
+        mApostilaAno.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mApostilaAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "4", "5", "6", "7", "8", "9", "EJA" }));
+        mApostilaAno.setMaximumSize(new java.awt.Dimension(85, 20));
+        mApostilaAno.setMinimumSize(new java.awt.Dimension(85, 20));
+        mApostilaAno.setPreferredSize(new java.awt.Dimension(85, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 10;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
-        jPanel2.add(mEditorAno, gridBagConstraints);
+        jPanel2.add(mApostilaAno, gridBagConstraints);
 
-        mEditorTurma.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        mEditorTurma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A", "B", "C", "D", "E", "VII", "VIII" }));
-        mEditorTurma.setMaximumSize(new java.awt.Dimension(85, 20));
-        mEditorTurma.setMinimumSize(new java.awt.Dimension(85, 20));
-        mEditorTurma.setPreferredSize(new java.awt.Dimension(85, 20));
+        mApostilaTurma.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mApostilaTurma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A", "B", "C", "D", "E", "VII", "VIII" }));
+        mApostilaTurma.setMaximumSize(new java.awt.Dimension(85, 20));
+        mApostilaTurma.setMinimumSize(new java.awt.Dimension(85, 20));
+        mApostilaTurma.setPreferredSize(new java.awt.Dimension(85, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 10;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        jPanel2.add(mEditorTurma, gridBagConstraints);
+        jPanel2.add(mApostilaTurma, gridBagConstraints);
 
-        mEditorLink.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        mEditorLink.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        mEditorLink.setMaximumSize(new java.awt.Dimension(64, 20));
-        mEditorLink.setMinimumSize(new java.awt.Dimension(64, 20));
-        mEditorLink.setPreferredSize(new java.awt.Dimension(64, 20));
+        mApostilaPDF.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mApostilaPDF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        mApostilaPDF.setMaximumSize(new java.awt.Dimension(64, 20));
+        mApostilaPDF.setMinimumSize(new java.awt.Dimension(64, 20));
+        mApostilaPDF.setPreferredSize(new java.awt.Dimension(64, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        jPanel2.add(mEditorLink, gridBagConstraints);
+        jPanel2.add(mApostilaPDF, gridBagConstraints);
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
-        mButtonAdd.setText("INSERIR");
-        mButtonAdd.setFocusPainted(false);
-        mButtonAdd.addActionListener(new java.awt.event.ActionListener() {
+        mApostilaInsert.setText("INSERIR");
+        mApostilaInsert.setFocusPainted(false);
+        mApostilaInsert.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mButtonAddActionPerformed(evt);
+                mApostilaInsertActionPerformed(evt);
             }
         });
 
-        mButtonEdit.setText("ALTERAR");
-        mButtonEdit.setFocusPainted(false);
-        mButtonEdit.addActionListener(new java.awt.event.ActionListener() {
+        mApostilaUpdate.setText("ALTERAR");
+        mApostilaUpdate.setFocusPainted(false);
+        mApostilaUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mButtonEditActionPerformed(evt);
+                mApostilaUpdateActionPerformed(evt);
             }
         });
 
-        mButtonDelete.setText("EXCLUIR");
-        mButtonDelete.setFocusPainted(false);
-        mButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+        mApostilaButtonDelete.setText("EXCLUIR");
+        mApostilaButtonDelete.setFocusPainted(false);
+        mApostilaButtonDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mButtonDeleteActionPerformed(evt);
+                mApostilaButtonDeleteActionPerformed(evt);
             }
         });
 
-        mButtonRefresh.setText("RECARREGAR LISTA");
-        mButtonRefresh.setFocusPainted(false);
-        mButtonRefresh.addActionListener(new java.awt.event.ActionListener() {
+        mApostilaButtonRefresh.setText("RECARREGAR LISTA");
+        mApostilaButtonRefresh.setFocusPainted(false);
+        mApostilaButtonRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mButtonRefreshActionPerformed(evt);
+                mApostilaButtonRefreshActionPerformed(evt);
             }
         });
 
-        mButtonNovo.setText("NOVO");
-        mButtonNovo.setFocusPainted(false);
-        mButtonNovo.addActionListener(new java.awt.event.ActionListener() {
+        mApostilaButtonNovo.setText("NOVO");
+        mApostilaButtonNovo.setFocusPainted(false);
+        mApostilaButtonNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mButtonNovoActionPerformed(evt);
+                mApostilaButtonNovoActionPerformed(evt);
             }
         });
 
-        mOpenPlanilhas.setText("Abrir Planilha");
-        mOpenPlanilhas.setFocusPainted(false);
-        mOpenPlanilhas.addActionListener(new java.awt.event.ActionListener() {
+        mApostilaButtonOpenPlanilha.setText("Abrir Planilha");
+        mApostilaButtonOpenPlanilha.setFocusPainted(false);
+        mApostilaButtonOpenPlanilha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mOpenPlanilhasActionPerformed(evt);
+                mApostilaButtonOpenPlanilhaActionPerformed(evt);
             }
         });
 
-        mImport.setText("Colar da Planilha");
-        mImport.setFocusPainted(false);
-        mImport.addActionListener(new java.awt.event.ActionListener() {
+        mApostilaButtonPastePlanilha.setText("Colar da Planilha");
+        mApostilaButtonPastePlanilha.setFocusPainted(false);
+        mApostilaButtonPastePlanilha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mImportActionPerformed(evt);
+                mApostilaButtonPastePlanilhaActionPerformed(evt);
             }
         });
 
@@ -439,38 +471,329 @@ public class App extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mApostilaButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mApostilaButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(mButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(mApostilaInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mButtonEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(mApostilaUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(mApostilaButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(mOpenPlanilhas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(mApostilaButtonOpenPlanilha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mImport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(mApostilaButtonPastePlanilha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                .addComponent(mApostilaButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mButtonRefresh)
+                .addComponent(mApostilaButtonRefresh)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(mButtonEdit, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                    .addComponent(mButtonAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mButtonDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(mApostilaUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                    .addComponent(mApostilaInsert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mApostilaButtonDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(mOpenPlanilhas)
-                    .addComponent(mImport))
+                    .addComponent(mApostilaButtonOpenPlanilha)
+                    .addComponent(mApostilaButtonPastePlanilha))
                 .addContainerGap())
         );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
+        );
+
+        Tabs.addTab("Apostilas", jPanel4);
+
+        jPanel7.setBackground(new java.awt.Color(51, 51, 51));
+        java.awt.GridBagLayout jPanel7Layout = new java.awt.GridBagLayout();
+        jPanel7Layout.columnWidths = new int[] {0, 10, 0};
+        jPanel7Layout.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        jPanel7.setLayout(jPanel7Layout);
+
+        jLabel9.setBackground(new java.awt.Color(60, 63, 64));
+        jLabel9.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("ID");
+        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        jLabel9.setMaximumSize(new java.awt.Dimension(85, 20));
+        jLabel9.setMinimumSize(new java.awt.Dimension(85, 20));
+        jLabel9.setPreferredSize(new java.awt.Dimension(85, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 2);
+        jPanel7.add(jLabel9, gridBagConstraints);
+
+        jLabel10.setBackground(new java.awt.Color(60, 63, 64));
+        jLabel10.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setText("TÍTULO");
+        jLabel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        jLabel10.setMaximumSize(new java.awt.Dimension(170, 20));
+        jLabel10.setMinimumSize(new java.awt.Dimension(170, 20));
+        jLabel10.setPreferredSize(new java.awt.Dimension(150, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        jPanel7.add(jLabel10, gridBagConstraints);
+
+        jLabel11.setBackground(new java.awt.Color(60, 63, 64));
+        jLabel11.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("AUTOR");
+        jLabel11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        jLabel11.setMaximumSize(new java.awt.Dimension(170, 20));
+        jLabel11.setMinimumSize(new java.awt.Dimension(170, 20));
+        jLabel11.setPreferredSize(new java.awt.Dimension(150, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
+        jPanel7.add(jLabel11, gridBagConstraints);
+
+        jLabel13.setBackground(new java.awt.Color(60, 63, 64));
+        jLabel13.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("EDITORA");
+        jLabel13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        jLabel13.setMaximumSize(new java.awt.Dimension(85, 20));
+        jLabel13.setMinimumSize(new java.awt.Dimension(85, 20));
+        jLabel13.setPreferredSize(new java.awt.Dimension(85, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 11, 0, 0);
+        jPanel7.add(jLabel13, gridBagConstraints);
+
+        jLabel14.setBackground(new java.awt.Color(60, 63, 64));
+        jLabel14.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("LINK IMAGEM");
+        jLabel14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        jLabel14.setMaximumSize(new java.awt.Dimension(85, 20));
+        jLabel14.setMinimumSize(new java.awt.Dimension(85, 20));
+        jLabel14.setPreferredSize(new java.awt.Dimension(85, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
+        jPanel7.add(jLabel14, gridBagConstraints);
+
+        mLivroID.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mLivroID.setModel(new javax.swing.SpinnerNumberModel(1, 0, 99999, 1));
+        mLivroID.setMaximumSize(new java.awt.Dimension(85, 20));
+        mLivroID.setMinimumSize(new java.awt.Dimension(85, 20));
+        mLivroID.setPreferredSize(new java.awt.Dimension(85, 20));
+        mLivroID.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                mLivroIDStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 2);
+        jPanel7.add(mLivroID, gridBagConstraints);
+
+        mLivroAutor.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mLivroAutor.setMaximumSize(new java.awt.Dimension(170, 20));
+        mLivroAutor.setMinimumSize(new java.awt.Dimension(170, 20));
+        mLivroAutor.setPreferredSize(new java.awt.Dimension(150, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        jPanel7.add(mLivroAutor, gridBagConstraints);
+
+        mLivroTitulo.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mLivroTitulo.setMaximumSize(new java.awt.Dimension(170, 20));
+        mLivroTitulo.setMinimumSize(new java.awt.Dimension(170, 20));
+        mLivroTitulo.setPreferredSize(new java.awt.Dimension(150, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        jPanel7.add(mLivroTitulo, gridBagConstraints);
+
+        mLivroEditora.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mLivroEditora.setMaximumSize(new java.awt.Dimension(85, 20));
+        mLivroEditora.setMinimumSize(new java.awt.Dimension(85, 20));
+        mLivroEditora.setPreferredSize(new java.awt.Dimension(85, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        jPanel7.add(mLivroEditora, gridBagConstraints);
+
+        mLivroImagem.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mLivroImagem.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        mLivroImagem.setMaximumSize(new java.awt.Dimension(64, 20));
+        mLivroImagem.setMinimumSize(new java.awt.Dimension(64, 20));
+        mLivroImagem.setPreferredSize(new java.awt.Dimension(64, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        jPanel7.add(mLivroImagem, gridBagConstraints);
+
+        jLabel17.setBackground(new java.awt.Color(60, 63, 64));
+        jLabel17.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel17.setText("LINK PDF");
+        jLabel17.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        jLabel17.setMaximumSize(new java.awt.Dimension(85, 20));
+        jLabel17.setMinimumSize(new java.awt.Dimension(85, 20));
+        jLabel17.setPreferredSize(new java.awt.Dimension(85, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
+        jPanel7.add(jLabel17, gridBagConstraints);
+
+        mLivroPDF.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        mLivroPDF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        mLivroPDF.setMaximumSize(new java.awt.Dimension(64, 20));
+        mLivroPDF.setMinimumSize(new java.awt.Dimension(64, 20));
+        mLivroPDF.setPreferredSize(new java.awt.Dimension(64, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        jPanel7.add(mLivroPDF, gridBagConstraints);
+
+        jPanel8.setBackground(new java.awt.Color(51, 51, 51));
+
+        mLivroButtonInsert.setText("INSERIR");
+        mLivroButtonInsert.setFocusPainted(false);
+        mLivroButtonInsert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mLivroButtonInsertActionPerformed(evt);
+            }
+        });
+
+        mLivroButtonUpdate.setText("ALTERAR");
+        mLivroButtonUpdate.setFocusPainted(false);
+        mLivroButtonUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mLivroButtonUpdateActionPerformed(evt);
+            }
+        });
+
+        mLivroButtonDelete.setText("EXCLUIR");
+        mLivroButtonDelete.setFocusPainted(false);
+        mLivroButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mLivroButtonDeleteActionPerformed(evt);
+            }
+        });
+
+        mLivroButtonRefresh.setText("RECARREGAR LISTA");
+        mLivroButtonRefresh.setFocusPainted(false);
+        mLivroButtonRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mLivroButtonRefreshActionPerformed(evt);
+            }
+        });
+
+        mLivroButtonNovo.setText("NOVO");
+        mLivroButtonNovo.setFocusPainted(false);
+        mLivroButtonNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mLivroButtonNovoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mLivroButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mLivroButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(mLivroButtonInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(mLivroButtonUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(mLivroButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mLivroButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mLivroButtonRefresh)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(mLivroButtonInsert, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                    .addComponent(mLivroButtonUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mLivroButtonDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(7, 7, 7))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        Tabs.addTab("Livros", jPanel6);
 
         jPanel5.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -498,7 +821,7 @@ public class App extends javax.swing.JFrame {
                 .addComponent(mVersionText, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mButtonGithub)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -518,13 +841,10 @@ public class App extends javax.swing.JFrame {
             .addGroup(mMainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Tabs)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
-                    .addGroup(mMainPanelLayout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         mMainPanelLayout.setVerticalGroup(
@@ -535,12 +855,10 @@ public class App extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
+                .addComponent(Tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -553,7 +871,7 @@ public class App extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mMainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mMainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -561,62 +879,139 @@ public class App extends javax.swing.JFrame {
 
     private void setAllComponentsEnabled(boolean enabled) {
         jScrollPane1.setEnabled(enabled);
-        mButtonAdd.setEnabled(enabled);
-        mButtonDelete.setEnabled(enabled);
-        mButtonEdit.setEnabled(enabled);
-        mButtonNovo.setEnabled(enabled);
-        mButtonRefresh.setEnabled(enabled);
-        mEditorAno.setEnabled(enabled);
-        mEditorAutor.setEnabled(enabled);
-        mEditorData.setEnabled(enabled);
-        mEditorDisciplina.setEnabled(enabled);
-        mEditorID.setEnabled(enabled);
-        mEditorLink.setEnabled(enabled);
-        mEditorNome.setEnabled(enabled);
-        mEditorTurma.setEnabled(enabled);
-        mTable.setEnabled(enabled);
+        mApostilaInsert.setEnabled(enabled);
+        mApostilaButtonDelete.setEnabled(enabled);
+        mApostilaUpdate.setEnabled(enabled);
+        mApostilaButtonNovo.setEnabled(enabled);
+        mApostilaButtonRefresh.setEnabled(enabled);
+        mApostilaAno.setEnabled(enabled);
+        mApostilaAutor.setEnabled(enabled);
+        mApostilaData.setEnabled(enabled);
+        mApostilaDisciplina.setEnabled(enabled);
+        mApostilaID.setEnabled(enabled);
+        mApostilaPDF.setEnabled(enabled);
+        mApostilaNome.setEnabled(enabled);
+        mApostilaTurma.setEnabled(enabled);
+        mTable.setEnabled(enabled);        
+        mLivroButtonUpdate.setEnabled(enabled);
+        mLivroAutor.setEnabled(enabled);
+        mLivroEditora.setEnabled(enabled);
+        mLivroButtonDelete.setEnabled(enabled);
+        mLivroID.setEnabled(enabled);
+        mLivroImagem.setEnabled(enabled);
+        mLivroButtonInsert.setEnabled(enabled);
+        mLivroButtonNovo.setEnabled(enabled);
+        mLivroPDF.setEnabled(enabled);
+        mLivroButtonRefresh.setEnabled(enabled);
+        mLivroTitulo.setEnabled(enabled); 
+        Tabs.setEnabled(enabled); 
     }
 
     private void setStatusText(String text) {
         mStatusText.setText(text);
     }
 
-    private void updateTable(String messageAfterUpdate) {
+    private void updateTable(String messageAfterUpdate, int tableId) {
         setAllComponentsEnabled(false);
         setStatusText("Atualizando lista...");
         while (mTable.getModel().getRowCount() > 0) {
             ((DefaultTableModel) mTable.getModel()).removeRow(0);
         }
-        new Sql("SELECT * FROM Documentos ORDER BY ID;") {
-            @Override
-            public void onQueryConcluida(ResultSet rs) {
-                try {
-                    while (rs.next()) {
-                        ((DefaultTableModel) mTable.getModel()).addRow(new Object[]{
-                            rs.getInt("id"),
-                            rs.getString("nome"),
-                            rs.getString("autor"),
-                            rs.getString("disciplina"),
-                            rs.getString("data"),
-                            rs.getString("link"),
-                            rs.getString("ano"),
-                            rs.getString("turma")
-                        });
+        
+        if(tableId==TABLE_ID_APOSTILAS){
+            mTable.setModel(new javax.swing.table.DefaultTableModel(new Object [][] { },
+                new String [] {"ID", "Nome", "Autor", "Disciplina", "Data", "Link", "Ano", "Turma"}) {
+                    Class[] types = new Class [] {
+                        java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                    };
+                    boolean[] canEdit = new boolean [] {
+                        false, false, false, false, false, false, false, false
+                    };
+
+                    public Class getColumnClass(int columnIndex) {
+                        return types [columnIndex];
                     }
-                    setStatusText(messageAfterUpdate);
-                } catch (SQLException ex) {
-                    setStatusText("Erro: " + ex.getLocalizedMessage());
-                } finally {
+
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit [columnIndex];
+                    }
+                });
+            new Sql("SELECT * FROM Documentos ORDER BY ID;") {
+                @Override
+                public void onQueryConcluida(ResultSet rs) {
+                    try {
+                        while (rs.next()) {
+                            ((DefaultTableModel) mTable.getModel()).addRow(new Object[]{
+                                rs.getInt("id"),
+                                rs.getString("nome"),
+                                rs.getString("autor"),
+                                rs.getString("disciplina"),
+                                rs.getString("data"),
+                                rs.getString("link"),
+                                rs.getString("ano"),
+                                rs.getString("turma")
+                            });
+                        }
+                        setStatusText(messageAfterUpdate);
+                    } catch (SQLException ex) {
+                        setStatusText("Erro: " + ex.getLocalizedMessage());
+                    } finally {
+                        setAllComponentsEnabled(true);
+                    }
+                }
+
+                @Override
+                public void onQueryErro(String feedback) {
+                    setStatusText("Erro: " + feedback);
                     setAllComponentsEnabled(true);
                 }
-            }
+            }.start();
+        } else{
+             mTable.setModel(new javax.swing.table.DefaultTableModel(new Object [][] { },
+                new String [] {"ID", "Título", "Autor", "Editora", "Link Capa", "Link PDF"}) {
+                    Class[] types = new Class [] {
+                        java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                    };
+                    boolean[] canEdit = new boolean [] {false, false, false, false, false, false};
 
-            @Override
-            public void onQueryErro(String feedback) {
-                setStatusText("Erro: " + feedback);
-                setAllComponentsEnabled(true);
-            }
-        }.start();
+                    public Class getColumnClass(int columnIndex) {
+                        return types [columnIndex];
+                    }
+
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit [columnIndex];
+                    }
+                });
+             new Sql("SELECT * FROM livros ORDER BY ID;") {
+                @Override
+                public void onQueryConcluida(ResultSet rs) {
+                    try {
+                        while (rs.next()) {
+                            ((DefaultTableModel) mTable.getModel()).addRow(new Object[]{
+                                rs.getInt("id"),
+                                rs.getString("titulo"),
+                                rs.getString("autor"),
+                                rs.getString("editora"),
+                                rs.getString("url_img"),
+                                rs.getString("url_pdf")
+                            });
+                        }
+                        setStatusText(messageAfterUpdate);
+                    } catch (SQLException ex) {
+                        setStatusText("Erro: " + ex.getLocalizedMessage());
+                    } finally {
+                        setAllComponentsEnabled(true);
+                    }
+                }
+
+                @Override
+                public void onQueryErro(String feedback) {
+                    setStatusText("Erro: " + feedback);
+                    setAllComponentsEnabled(true);
+                }
+            }.start();
+        }
+        TableIdAtual = tableId;
     }
 
     private String getClipboard() throws IOException, UnsupportedFlavorException {
@@ -629,7 +1024,7 @@ public class App extends javax.swing.JFrame {
         return clip;
     }
 
-    private void mButtonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonNovoActionPerformed
+    private void mApostilaButtonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mApostilaButtonNovoActionPerformed
         mTable.clearSelection();
         int id = 0;
         for (int count = id; count < mTable.getModel().getRowCount(); count++) {
@@ -637,31 +1032,31 @@ public class App extends javax.swing.JFrame {
                 id = ((int) mTable.getModel().getValueAt(count, 0));
             }
         }
-        mEditorID.setValue(id + 1);
-        mEditorNome.setText("");
-        mEditorAutor.setText("");
-        mEditorDisciplina.setSelectedIndex(0);
-        mEditorData.setText(String.valueOf(new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
-        mEditorLink.setText("");
-        mEditorAno.setSelectedIndex(0);
-        mEditorTurma.setSelectedIndex(0);
-    }//GEN-LAST:event_mButtonNovoActionPerformed
+        mApostilaID.setValue(id + 1);
+        mApostilaNome.setText("");
+        mApostilaAutor.setText("");
+        mApostilaDisciplina.setSelectedIndex(0);
+        mApostilaData.setText(String.valueOf(new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
+        mApostilaPDF.setText("");
+        mApostilaAno.setSelectedIndex(0);
+        mApostilaTurma.setSelectedIndex(0);
+    }//GEN-LAST:event_mApostilaButtonNovoActionPerformed
 
-    private void mButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonAddActionPerformed
+    private void mApostilaInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mApostilaInsertActionPerformed
         setAllComponentsEnabled(false);
         setStatusText("Enviando documento...");
         new Sql("INSERT INTO documentos VALUES ("
-                + mEditorID.getValue() + ","
-                + "'" + mEditorNome.getText() + "',"
-                + "'" + mEditorAutor.getText() + "',"
-                + "'" + String.valueOf(mEditorDisciplina.getItemAt(mEditorDisciplina.getSelectedIndex())) + "',"
-                + "'" + mEditorData.getText() + "',"
-                + "'" + mEditorLink.getText() + "',"
-                + "'" + String.valueOf(mEditorAno.getItemAt(mEditorAno.getSelectedIndex())) + "',"
-                + "'" + String.valueOf(mEditorTurma.getItemAt(mEditorTurma.getSelectedIndex())) + "');") {
+                + mApostilaID.getValue() + ","
+                + "'" + mApostilaNome.getText() + "',"
+                + "'" + mApostilaAutor.getText() + "',"
+                + "'" + String.valueOf(mApostilaDisciplina.getItemAt(mApostilaDisciplina.getSelectedIndex())) + "',"
+                + "'" + mApostilaData.getText() + "',"
+                + "'" + mApostilaPDF.getText() + "',"
+                + "'" + String.valueOf(mApostilaAno.getItemAt(mApostilaAno.getSelectedIndex())) + "',"
+                + "'" + String.valueOf(mApostilaTurma.getItemAt(mApostilaTurma.getSelectedIndex())) + "');") {
             @Override
             public void onQueryConcluida(ResultSet rs) {
-                updateTable("Sucesso: Documento enviado.");
+                updateTable("Sucesso: Documento enviado.", TABLE_ID_APOSTILAS);
             }
 
             @Override
@@ -670,60 +1065,70 @@ public class App extends javax.swing.JFrame {
                 setAllComponentsEnabled(true);
             }
         }.start();
-    }//GEN-LAST:event_mButtonAddActionPerformed
+    }//GEN-LAST:event_mApostilaInsertActionPerformed
 
-    private void mButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonRefreshActionPerformed
-        mEditorID.setValue(1);
-        mEditorNome.setText("");
-        mEditorAutor.setText("");
-        mEditorDisciplina.setSelectedIndex(0);
-        mEditorData.setText(String.valueOf(new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
-        mEditorLink.setText("");
-        mEditorAno.setSelectedIndex(0);
-        mEditorTurma.setSelectedIndex(0);
-        updateTable("Sucesso: Lista atualizada.");
-    }//GEN-LAST:event_mButtonRefreshActionPerformed
+    private void mApostilaButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mApostilaButtonRefreshActionPerformed
+        mApostilaID.setValue(1);
+        mApostilaNome.setText("");
+        mApostilaAutor.setText("");
+        mApostilaDisciplina.setSelectedIndex(0);
+        mApostilaData.setText(String.valueOf(new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
+        mApostilaPDF.setText("");
+        mApostilaAno.setSelectedIndex(0);
+        mApostilaTurma.setSelectedIndex(0);
+        updateTable("Sucesso: Lista atualizada.", TABLE_ID_APOSTILAS);
+    }//GEN-LAST:event_mApostilaButtonRefreshActionPerformed
 
-    private void mEditorIDStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mEditorIDStateChanged
+    private void mApostilaIDStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mApostilaIDStateChanged
         for (int rowIndex = 0; rowIndex < mTable.getModel().getRowCount(); rowIndex++) {
-            if (((int) ((DefaultTableModel) mTable.getModel()).getValueAt(rowIndex, 0)) == (int) mEditorID.getValue()) {
-                mEditorNome.setText((String) mTable.getValueAt(rowIndex, 1));
-                mEditorAutor.setText((String) mTable.getValueAt(rowIndex, 2));
-                mEditorDisciplina.setSelectedItem(mTable.getValueAt(rowIndex, 3));
-                mEditorData.setText((String.valueOf(mTable.getValueAt(rowIndex, 4))));
-                mEditorLink.setText((String) mTable.getValueAt(rowIndex, 5));
-                mEditorAno.setSelectedItem(mTable.getValueAt(rowIndex, 6));
-                mEditorTurma.setSelectedItem(mTable.getValueAt(rowIndex, 7));
+            if (((int) ((DefaultTableModel) mTable.getModel()).getValueAt(rowIndex, 0)) == (int) mApostilaID.getValue()) {
+                mApostilaNome.setText((String) mTable.getValueAt(rowIndex, 1));
+                mApostilaAutor.setText((String) mTable.getValueAt(rowIndex, 2));
+                mApostilaDisciplina.setSelectedItem(mTable.getValueAt(rowIndex, 3));
+                mApostilaData.setText((String.valueOf(mTable.getValueAt(rowIndex, 4))));
+                mApostilaPDF.setText((String) mTable.getValueAt(rowIndex, 5));
+                mApostilaAno.setSelectedItem(mTable.getValueAt(rowIndex, 6));
+                mApostilaTurma.setSelectedItem(mTable.getValueAt(rowIndex, 7));
             }
         }
-    }//GEN-LAST:event_mEditorIDStateChanged
+    }//GEN-LAST:event_mApostilaIDStateChanged
 
     private void mTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mTableMousePressed
         int rowSelected = ((JTable) evt.getSource()).rowAtPoint(evt.getPoint());
-        mEditorID.setValue(((JTable) evt.getSource()).getValueAt(rowSelected, 0));
-        mEditorNome.setText((String) ((JTable) evt.getSource()).getValueAt(rowSelected, 1));
-        mEditorAutor.setText((String) ((JTable) evt.getSource()).getValueAt(rowSelected, 2));
-        mEditorDisciplina.setSelectedItem(((JTable) evt.getSource()).getValueAt(rowSelected, 3));
-        mEditorData.setText((String.valueOf(((JTable) evt.getSource()).getValueAt(rowSelected, 4))));
-        mEditorLink.setText((String) ((JTable) evt.getSource()).getValueAt(rowSelected, 5));
-        mEditorAno.setSelectedItem(((JTable) evt.getSource()).getValueAt(rowSelected, 6));
-        mEditorTurma.setSelectedItem(((JTable) evt.getSource()).getValueAt(rowSelected, 7));
+        if(TableIdAtual == TABLE_ID_APOSTILAS){
+            mApostilaID.setValue(((JTable) evt.getSource()).getValueAt(rowSelected, 0));
+            mApostilaNome.setText((String) ((JTable) evt.getSource()).getValueAt(rowSelected, 1));
+            mApostilaAutor.setText((String) ((JTable) evt.getSource()).getValueAt(rowSelected, 2));
+            mApostilaDisciplina.setSelectedItem(((JTable) evt.getSource()).getValueAt(rowSelected, 3));
+            mApostilaData.setText((String.valueOf(((JTable) evt.getSource()).getValueAt(rowSelected, 4))));
+            mApostilaPDF.setText((String) ((JTable) evt.getSource()).getValueAt(rowSelected, 5));
+            mApostilaAno.setSelectedItem(((JTable) evt.getSource()).getValueAt(rowSelected, 6));
+            mApostilaTurma.setSelectedItem(((JTable) evt.getSource()).getValueAt(rowSelected, 7));
+        } else{
+            mLivroID.setValue(((JTable) evt.getSource()).getValueAt(rowSelected, 0));
+            mLivroTitulo.setText((String) ((JTable) evt.getSource()).getValueAt(rowSelected, 1));
+            mLivroAutor.setText((String) ((JTable) evt.getSource()).getValueAt(rowSelected, 2));
+            mLivroEditora.setText((String) ((JTable) evt.getSource()).getValueAt(rowSelected, 3));
+            mLivroImagem.setText((String.valueOf(((JTable) evt.getSource()).getValueAt(rowSelected, 4))));
+            mLivroPDF.setText((String) ((JTable) evt.getSource()).getValueAt(rowSelected, 5));
+        }       
     }//GEN-LAST:event_mTableMousePressed
 
-    private void mButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonDeleteActionPerformed
+    private void mApostilaButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mApostilaButtonDeleteActionPerformed
+        String id = String.valueOf(mApostilaID.getValue());
         int opcao = JOptionPane.showConfirmDialog(mMainPanel,
-                "Tem certeza que deseja excluir o documento de ID " + mEditorID.getValue() + "? Essa ação é irreversível.",
+                "Tem certeza que deseja excluir a apostila de ID " + id + "? Essa ação é irreversível.",
                 "Exclusão",
                 JOptionPane.YES_NO_OPTION
         );
 
         if (opcao == 0) {
             setAllComponentsEnabled(false);
-            setStatusText("Excluindo documento...");
-            new Sql("DELETE FROM DOCUMENTOS WHERE ID=" + mEditorID.getValue()) {
+            setStatusText("Excluindo entrada...");
+            new Sql("DELETE FROM documentos WHERE ID=" + id) {
                 @Override
                 public void onQueryConcluida(ResultSet rs) {
-                    updateTable("Sucesso: Documento excuido.");
+                    updateTable("Sucesso: apostila excuida.", TableIdAtual);
                 }
 
                 @Override
@@ -733,12 +1138,12 @@ public class App extends javax.swing.JFrame {
                 }
             }.start();
         }
-    }//GEN-LAST:event_mButtonDeleteActionPerformed
+    }//GEN-LAST:event_mApostilaButtonDeleteActionPerformed
 
-    private void mButtonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonEditActionPerformed
+    private void mApostilaUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mApostilaUpdateActionPerformed
         int opcao = JOptionPane.showConfirmDialog(mMainPanel,
-                "Tem certeza que deseja editar o documento de ID " + mEditorID.getValue() + "? Essa ação é irreversível.",
-                "Exclusão",
+                "Tem certeza que deseja editar a apostila de ID " + mApostilaID.getValue() + "? Essa ação é irreversível.",
+                "Edição",
                 JOptionPane.YES_NO_OPTION
         );
 
@@ -746,17 +1151,17 @@ public class App extends javax.swing.JFrame {
             setAllComponentsEnabled(false);
             setStatusText("Editando documento...");
             new Sql("UPDATE documentos "
-                    + "SET nome= '" + mEditorNome.getText() + "',"
-                    + "autor= '" + mEditorAutor.getText() + "',"
-                    + "disciplina= '" + String.valueOf(mEditorDisciplina.getItemAt(mEditorDisciplina.getSelectedIndex())) + "',"
-                    + "data= '" + mEditorData.getText() + "',"
-                    + "link= '" + mEditorLink.getText() + "',"
-                    + "ano= '" + String.valueOf(mEditorAno.getItemAt(mEditorAno.getSelectedIndex())) + "',"
-                    + "turma= '" + String.valueOf(mEditorTurma.getItemAt(mEditorTurma.getSelectedIndex())) + "' "
-                    + "WHERE ID=" + mEditorID.getValue()) {
+                    + "SET nome= '" + mApostilaNome.getText() + "',"
+                    + "autor= '" + mApostilaAutor.getText() + "',"
+                    + "disciplina= '" + String.valueOf(mApostilaDisciplina.getItemAt(mApostilaDisciplina.getSelectedIndex())) + "',"
+                    + "data= '" + mApostilaData.getText() + "',"
+                    + "link= '" + mApostilaPDF.getText() + "',"
+                    + "ano= '" + String.valueOf(mApostilaAno.getItemAt(mApostilaAno.getSelectedIndex())) + "',"
+                    + "turma= '" + String.valueOf(mApostilaTurma.getItemAt(mApostilaTurma.getSelectedIndex())) + "' "
+                    + "WHERE ID=" + mApostilaID.getValue()) {
                 @Override
                 public void onQueryConcluida(ResultSet rs) {
-                    updateTable("Sucesso: Todos os documentos de ID " + mEditorID.getValue() + " foram modificados.");
+                    updateTable("Sucesso: Todos os documentos de ID " + mApostilaID.getValue() + " foram modificados.", TABLE_ID_APOSTILAS);
                 }
 
                 @Override
@@ -766,7 +1171,7 @@ public class App extends javax.swing.JFrame {
                 }
             }.start();
         }
-    }//GEN-LAST:event_mButtonEditActionPerformed
+    }//GEN-LAST:event_mApostilaUpdateActionPerformed
 
     private void mButtonGithubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mButtonGithubActionPerformed
         try {
@@ -776,7 +1181,7 @@ public class App extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mButtonGithubActionPerformed
 
-    private void mImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mImportActionPerformed
+    private void mApostilaButtonPastePlanilhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mApostilaButtonPastePlanilhaActionPerformed
         try {
             String query = "", preview = "";
             String[] clip = getClipboard().split("\n");
@@ -803,7 +1208,7 @@ public class App extends javax.swing.JFrame {
                 new Sql(query) {
                     @Override
                     public void onQueryConcluida(ResultSet rs) {
-                        updateTable("Sucesso: " + clip.length + " documentos em massa inseridos.");
+                        updateTable("Sucesso: " + clip.length + " documentos em massa inseridos.", TABLE_ID_APOSTILAS);
                     }
 
                     @Override
@@ -818,15 +1223,129 @@ public class App extends javax.swing.JFrame {
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
             JOptionPane.showMessageDialog(mMainPanel, "Formato não aceito, tenha certeza de que está copiando toda a linha da planilha e que está usando o Planilha do Google. Evite copiar linhas em branco.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_mImportActionPerformed
+    }//GEN-LAST:event_mApostilaButtonPastePlanilhaActionPerformed
 
-    private void mOpenPlanilhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mOpenPlanilhasActionPerformed
+    private void mApostilaButtonOpenPlanilhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mApostilaButtonOpenPlanilhaActionPerformed
         try {
             Desktop.getDesktop().browse(new URI("https://docs.google.com/spreadsheets/d/1W8IUcbsLwruiXyXgFGoUYN4HQAtxRfdaIgObKZVbTs8/edit?usp=sharing"));
         } catch (URISyntaxException | IOException ex) {
             setStatusText("Erro: Não foi possivel abrir navegador.");
         }
-    }//GEN-LAST:event_mOpenPlanilhasActionPerformed
+    }//GEN-LAST:event_mApostilaButtonOpenPlanilhaActionPerformed
+
+    private void mLivroIDStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mLivroIDStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mLivroIDStateChanged
+
+    private void TabsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TabsStateChanged
+         if(Sql.havePassword()) updateTable("Tabela mudada para "+ Tabs.getTitleAt(Tabs.getSelectedIndex()), Tabs.getSelectedIndex());
+    }//GEN-LAST:event_TabsStateChanged
+
+    private void mLivroButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mLivroButtonInsertActionPerformed
+        setAllComponentsEnabled(false);
+        setStatusText("Adicionando livro...");
+        new Sql("INSERT INTO livros VALUES ("
+                + mLivroID.getValue() + ","
+                + "'" + mLivroTitulo.getText() + "',"
+                + "'" + mLivroAutor.getText() + "',"
+                + "'" + mLivroEditora.getText() + "',"
+                + "'" + mLivroImagem.getText() + "',"
+                  + "'" + mLivroPDF.getText() + "');") {
+            @Override
+            public void onQueryConcluida(ResultSet rs) {
+                updateTable("Sucesso: Livro adicionado.", TABLE_ID_LIVROS);
+            }
+
+            @Override
+            public void onQueryErro(String feedback) {
+                setStatusText("Erro: " + feedback);
+                setAllComponentsEnabled(true);
+            }
+        }.start();
+    }//GEN-LAST:event_mLivroButtonInsertActionPerformed
+
+    private void mLivroButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mLivroButtonUpdateActionPerformed
+        int opcao = JOptionPane.showConfirmDialog(mMainPanel,
+                "Tem certeza que deseja o livro de ID " + mLivroID.getValue() + "? Essa ação é irreversível.",
+                "Edição",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (opcao == 0) {
+            setAllComponentsEnabled(false);
+            setStatusText("Editando livro...");
+            new Sql("UPDATE livros "
+                    + "SET titulo= '" + mLivroTitulo.getText() + "',"
+                    + "autor= '" + mLivroAutor.getText() + "',"
+                    + "editora= '" + mLivroEditora.getText() + "',"
+                    + "url_img= '" + mLivroImagem.getText() + "',"
+                    + "url_pdf= '" + mLivroPDF.getText() + "' "
+                    + "WHERE ID=" + mLivroID.getValue()) {
+                @Override
+                public void onQueryConcluida(ResultSet rs) {
+                    updateTable("Sucesso: Todos os livros de ID " + mLivroID.getValue() + " foram modificados.", TABLE_ID_LIVROS);
+                }
+
+                @Override
+                public void onQueryErro(String feedback) {
+                    setStatusText(feedback);
+                    setAllComponentsEnabled(true);
+                }
+            }.start();
+        }
+    }//GEN-LAST:event_mLivroButtonUpdateActionPerformed
+
+    private void mLivroButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mLivroButtonDeleteActionPerformed
+        String id = String.valueOf(mLivroID.getValue());
+        int opcao = JOptionPane.showConfirmDialog(mMainPanel,
+                "Tem certeza que deseja excluir o livro de ID " + id + "? Essa ação é irreversível.",
+                "Exclusão",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (opcao == 0) {
+            setAllComponentsEnabled(false);
+            setStatusText("Excluindo livro...");
+            new Sql("DELETE FROM livros WHERE ID=" + id) {
+                @Override
+                public void onQueryConcluida(ResultSet rs) {
+                    updateTable("Sucesso: livro excuido.", TABLE_ID_LIVROS);
+                }
+
+                @Override
+                public void onQueryErro(String feedback) {
+                    setStatusText(feedback);
+                    setAllComponentsEnabled(true);
+                }
+            }.start();
+        }
+    }//GEN-LAST:event_mLivroButtonDeleteActionPerformed
+
+    private void mLivroButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mLivroButtonRefreshActionPerformed
+        mLivroID.setValue(1);
+        mLivroTitulo.setText("");
+        mLivroAutor.setText("");
+        mLivroEditora.setText("");
+        mLivroPDF.setText("");
+        mLivroImagem.setText("");        
+        updateTable("Sucesso: Livros atualizada.", TABLE_ID_LIVROS);
+    }//GEN-LAST:event_mLivroButtonRefreshActionPerformed
+
+    private void mLivroButtonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mLivroButtonNovoActionPerformed
+        mTable.clearSelection();
+        int id = 0;
+        for (int count = id; count < mTable.getModel().getRowCount(); count++) {
+            if (((int) mTable.getModel().getValueAt(count, 0)) > id) {
+                id = ((int) mTable.getModel().getValueAt(count, 0));
+            }
+        }
+        mLivroID.setValue(id + 1);
+        mLivroTitulo.setText("");
+        mLivroAutor.setText("");
+        mLivroPDF.setText("");
+        mLivroImagem.setText(""); 
+        mLivroEditora.setText("");
+    }//GEN-LAST:event_mLivroButtonNovoActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -856,7 +1375,13 @@ public class App extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane Tabs;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -864,29 +1389,45 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton mButtonAdd;
-    private javax.swing.JButton mButtonDelete;
-    private javax.swing.JButton mButtonEdit;
+    private javax.swing.JComboBox<String> mApostilaAno;
+    private javax.swing.JTextField mApostilaAutor;
+    private javax.swing.JButton mApostilaButtonDelete;
+    private javax.swing.JButton mApostilaButtonNovo;
+    private javax.swing.JButton mApostilaButtonOpenPlanilha;
+    private javax.swing.JButton mApostilaButtonPastePlanilha;
+    private javax.swing.JButton mApostilaButtonRefresh;
+    private javax.swing.JTextField mApostilaData;
+    private javax.swing.JComboBox<String> mApostilaDisciplina;
+    private javax.swing.JSpinner mApostilaID;
+    private javax.swing.JButton mApostilaInsert;
+    private javax.swing.JTextField mApostilaNome;
+    private javax.swing.JTextField mApostilaPDF;
+    private javax.swing.JComboBox<String> mApostilaTurma;
+    private javax.swing.JButton mApostilaUpdate;
     private javax.swing.JButton mButtonGithub;
-    private javax.swing.JButton mButtonNovo;
-    private javax.swing.JButton mButtonRefresh;
-    private javax.swing.JComboBox<String> mEditorAno;
-    private javax.swing.JTextField mEditorAutor;
-    private javax.swing.JTextField mEditorData;
-    private javax.swing.JComboBox<String> mEditorDisciplina;
-    private javax.swing.JSpinner mEditorID;
-    private javax.swing.JTextField mEditorLink;
-    private javax.swing.JTextField mEditorNome;
-    private javax.swing.JComboBox<String> mEditorTurma;
-    private javax.swing.JButton mImport;
+    private javax.swing.JTextField mLivroAutor;
+    private javax.swing.JButton mLivroButtonDelete;
+    private javax.swing.JButton mLivroButtonInsert;
+    private javax.swing.JButton mLivroButtonNovo;
+    private javax.swing.JButton mLivroButtonRefresh;
+    private javax.swing.JButton mLivroButtonUpdate;
+    private javax.swing.JTextField mLivroEditora;
+    private javax.swing.JSpinner mLivroID;
+    private javax.swing.JTextField mLivroImagem;
+    private javax.swing.JTextField mLivroPDF;
+    private javax.swing.JTextField mLivroTitulo;
     private javax.swing.JLabel mLogo;
     private javax.swing.JPanel mMainPanel;
-    private javax.swing.JButton mOpenPlanilhas;
     private javax.swing.JLabel mStatusText;
     private javax.swing.JTable mTable;
     private javax.swing.JLabel mVersionText;
